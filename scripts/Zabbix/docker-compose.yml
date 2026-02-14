@@ -1,29 +1,37 @@
 version: '3.7'
+
 services:
   postgresql-server:
     image: postgres:16
     container_name: postgresql-server
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-zabbix}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zabbix}
-      POSTGRES_DB: ${POSTGRES_DB:-zabbix}
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
     volumes:
       - postgresql-data:/var/lib/postgresql/data
     networks:
       - zabbix-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zabbix"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   zabbix-server:
-    image: zabbix/zabbix-server-pgsql:latest
+    image: zabbix/zabbix-server-pgsql:7.0-latest
     container_name: zabbix-server
     restart: unless-stopped
     depends_on:
-      - postgresql-server
+      postgresql-server:
+        condition: service_healthy
     environment:
       DB_SERVER_HOST: postgresql-server
-      POSTGRES_USER: ${POSTGRES_USER:-zabbix}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zabbix}
-      POSTGRES_DB: ${POSTGRES_DB:-zabbix}
-      ZBX_LISTENIP: "0.0.0.0"        # Escuta em todas as interfaces
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
+      ZBX_LISTENIP: "0.0.0.0"
     ports:
       - "10051:10051"
     volumes:
@@ -33,29 +41,26 @@ services:
     networks:
       - zabbix-net
 
-  zabbix-web-nginx-pgsql:
-    image: zabbix/zabbix-web-nginx-pgsql:latest
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:7.0-latest
     container_name: zabbix-web
     restart: unless-stopped
     depends_on:
-      - postgresql-server
       - zabbix-server
     environment:
       DB_SERVER_HOST: postgresql-server
-      POSTGRES_USER: ${POSTGRES_USER:-zabbix}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zabbix}
-      POSTGRES_DB: ${POSTGRES_DB:-zabbix}
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: zabbix
+      POSTGRES_DB: zabbix
       ZBX_SERVER_HOST: zabbix-server
-      PHP_TZ: ${PHP_TZ:-America/Sao_Paulo}
+      PHP_TZ: America/Sao_Paulo
     ports:
-      - "${ZABBIX_FRONTEND_PORT:-8080}:8080"  # Interface Web acessível
-    volumes:
-      - zabbix-web-data:/usr/share/zabbix
+      - "8080:8080"
     networks:
       - zabbix-net
 
   zabbix-agent:
-    image: zabbix/zabbix-agent:latest
+    image: zabbix/zabbix-agent:7.0-latest
     container_name: zabbix-agent
     restart: unless-stopped
     depends_on:
@@ -63,9 +68,7 @@ services:
     environment:
       ZBX_HOSTNAME: "zabbix-server"
       ZBX_SERVER_HOST: zabbix-server
-      ZBX_SERVER_PORT: '10051'
       ZBX_SERVER_ACTIVE: zabbix-server
-      ZBX_LISTENIP: "0.0.0.0"        # Escuta em todas as interfaces
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run
@@ -78,7 +81,6 @@ volumes:
   zabbix-server-data:
   zabbix-snmptraps-data:
   zabbix-export-data:
-  zabbix-web-data:
 
 networks:
   zabbix-net:
