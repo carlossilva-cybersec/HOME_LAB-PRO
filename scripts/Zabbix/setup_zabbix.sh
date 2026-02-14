@@ -38,7 +38,7 @@ fi
 # 4. Criação do diretório e download dos arquivos
 # -------------------------------
 ZABBIX_DIR="/opt/zabbix"
-REPO_BASE="https://raw.githubusercontent.com/carlossilva-cybersec/HOME_LAB-PRO/scripts/Zabbix/"
+REPO_BASE="https://raw.githubusercontent.com/carlossilva-cybersec/HOME_LAB-PRO/refs/heads/main/scripts/Zabbix/"
 
 echo "📂 Criando diretório do Zabbix em $ZABBIX_DIR ..."
 mkdir -p "$ZABBIX_DIR"
