@@ -22,7 +22,7 @@ fi
 # 2. Atualização e pacotes básicos
 # -------------------------------
 echo "🔄 Atualizando pacotes e instalando dependências..."
-apt update -y && apt install -y git curl wget docker-compose-plugin
+apt update -y && apt install -y git curl wget
 
 # -------------------------------
 # 3. Instalação do Docker (caso não exista)
