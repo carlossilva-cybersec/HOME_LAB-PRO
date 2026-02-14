@@ -26,9 +26,6 @@ Ideal para quem deseja subir rapidamente um ambiente funcional de **monitorament
 ---
 
 ## 🚀 Como executar
-
-carlossilva-cybersec/HOME_LAB-PRO/scripts/Zabbix/docker-compose.yml
-
 ```
 curl -sSL https://raw.githubusercontent.com/carlossilva-cybersec/HOME_LAB-PRO/scripts/Zabbix/setup_zabbix.sh | bash
 ```
