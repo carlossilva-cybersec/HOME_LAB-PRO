@@ -35,3 +35,7 @@ Construir um ambiente completo de laboratório para:
 - Windows 11 (Máquina cliente)
 
 ---
+
+
+
+![A flowchart diagram](.img/topologia_lab.png "System Flowchart")
