@@ -38,4 +38,4 @@ Construir um ambiente completo de laboratório para:
 
 
 
-![A flowchart diagram](.img/topologia_lab.png "System Flowchart")
+![A flowchart diagram](./img/topologia_lab.png "System Flowchart")
