@@ -27,5 +27,5 @@ Ideal para quem deseja subir rapidamente um ambiente funcional de **monitorament
 
 ## 🚀 Como executar
 ```
-curl -sSL https://raw.githubusercontent.com/carlossilva-cybersec/HOME_LAB-PRO/scripts/Zabbix/setup_zabbix.sh | bash
+curl -sSL https://raw.githubusercontent.com/carlossilva-cybersec/HOME_LAB-PRO/refs/heads/main/scripts/Zabbix/setup_zabbix.sh | bash
 ```
